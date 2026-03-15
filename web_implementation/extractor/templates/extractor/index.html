@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Furniture Product Extractor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f7f7f7;
+        }
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        input[type="text"] {
+            width: 90%;
+            padding: 12px;
+            margin-top: 8px;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 18px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .error {
+            color: #b00020;
+            margin-top: 16px;
+        }
+        .result-box {
+            margin-top: 24px;
+            padding: 16px;
+            background: #fafafa;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+        ul {
+            margin-top: 12px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Furniture Product Extractor</h1>
+        <p>Submit a URL and extract product names from the page.</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <label for="url">Page URL</label>
+            <input type="text" id="url" name="url" value="{{ url }}" placeholder="https://example.com/product-page" required>
+            <button type="submit">Extract Products</button>
+        </form>
+
+        {% if error %}
+            <div class="error">
+                <strong>Error:</strong> {{ error }}
+            </div>
+        {% endif %}
+
+        {% if submitted %}
+            <div class="result-box">
+                <h2>Extraction Result</h2>
+                <p><strong>URL:</strong> {{ url }}</p>
+
+                {% if products %}
+                    <p><strong>Found products:</strong> {{ products|length }}</p>
+                    <ul>
+                        {% for product in products %}
+                            <li>{{ product }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p><strong>No products found.</strong></p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
